@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Slackr</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- You can add your styles and scripts here -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="styles/provided.css"
+    />
+
+    <!-- Bootstrap icon -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5.3 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- for Tooltips -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module" src="src/helpers.js"></script>
+  </head>
+
+  <body>
+    <header class="banner">
+      <a href="#dashboard">
+        <h1 class="text-3xl font-bold">Slackr</h1>
+      </a>
+      <div id="auth-div" class="d-flex justify-content-between">
+        <a id="login-link" href="#login">Login</a>
+        <p>&nbsp;</p>
+        <a id="register-link" href="#register">Register</a>
+      </div>
+    </header>
+
+    <!-- User profile Offcanvas -->
+    <!-- For the id of Offcanvas, I follow the name style on the example from Bootstrap -->
+    <div
+      class="offcanvas offcanvas-start"
+      tabindex="-1"
+      id="userProfileOffcanvas"
+      aria-labelledby="userProfileOffcanvasLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="userProfileOffcanvasLabel">
+          Edit Profile
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <!-- Form to update profile -->
+        <form>
+          <div class="mb-3">
+            <label for="userName" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="userName"
+              name="userName"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="userBio" class="form-label">Bio</label>
+            <textarea
+              class="form-control"
+              id="userBio"
+              name="userBio"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="userEmail" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              name="userEmail"
+              id="userEmail"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="userPassword" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              name="userPwd"
+              id="userPassword"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="userAvatar" class="form-label">Change Image</label>
+            <input
+              type="file"
+              class="form-control"
+              name="userAvatar"
+              id="userAvatar"
+            />
+          </div>
+          <button id="updateProfileBtn" type="submit" class="btn btn-secondary">
+            Update Profile
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <template id="channel-details-template">
+      <section class="channel-detail">
+        <div class="channel-log">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            fill="currentColor"
+            class="bi bi-discord m-3"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"
+            />
+          </svg>
+        </div>
+
+        <div class="channel-meta mt-3">
+          <h5 class="channel-name">Test msg</h5>
+          <p class="channel-desc">Test send, edit, delete msgs...</p>
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          fill="currentColor"
+          class="bi bi-pin-angle channel-pin"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146zm.122 2.112v-.002.002zm0-.002v.002a.5.5 0 0 1-.122.51L6.293 6.878a.5.5 0 0 1-.511.12H5.78l-.014-.004a4.507 4.507 0 0 0-.288-.076 4.922 4.922 0 0 0-.765-.116c-.422-.028-.836.008-1.175.15l5.51 5.509c.141-.34.177-.753.149-1.175a4.924 4.924 0 0 0-.192-1.054l-.004-.013v-.001a.5.5 0 0 1 .12-.512l3.536-3.535a.5.5 0 0 1 .532-.115l.096.022c.087.017.208.034.344.034.114 0 .23-.011.343-.04L9.927 2.028c-.029.113-.04.23-.04.343a1.779 1.779 0 0 0 .062.46z"
+          />
+        </svg>
+
+        <div
+          id="message-loading"
+          class="spinner-border"
+          role="status"
+          style="display: none;"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </section>
+    </template>
+
+    <!-- channel message template -->
+    <template id="channel-message-template">
+      <img src="../../asset/Jerry.jpeg" alt="user-img" class="user-img" />
+      <div class="msg-container d-flex flex-column">
+        <div class="d-flex flex-column">
+          <div class="send-name-time">
+            <p class="sender-name">Default</p>
+            <p class="send-time">Today</p>
+            <p
+              class="msg-edited"
+              data-bs-toggle="tooltip"
+              title="Edited@ 27/10/2023"
+            >
+              &nbsp;(edited)
+            </p>
+          </div>
+          <div class="msg-content">Channel message template</div>
+
+          <textarea
+            class="form-control message-edit"
+            id="channel-input-textarea"
+            rows="1"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="channel-message-opts">
+        <button
+          id="msgOptBtn"
+          type="button"
+          class="btn btn-secondary btn-sm dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        ></button>
+        <div class="dropdown-menu" aria-labelledby="msgOptBtn">
+          <p id="channel-message-edit" class="dropdown-item">Edit</p>
+          <p id="channel-message-delete" class="dropdown-item">Delete</p>
+          <p id="channel-message-pining" class="dropdown-item">Pinning</p>
+        </div>
+      </div>
+    </template>
+    <!-- channel message template ends here -->
+
+    <template id="channel-input-template">
+      <!-- from bootstrap icon -->
+      <div>
+        <svg
+          id="channel-input-image"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          class="bi bi-image"
+          viewBox="0 0 16 16"
+        >
+          <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+          <path
+            d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"
+          />
+        </svg>
+        <textarea
+          class="form-control"
+          id="channel-input-textarea"
+          rows="1"
+        ></textarea>
+
+        <svg
+          id="channel-input-send"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          class="bi bi-send-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"
+          />
+        </svg>
+      </div>
+    </template>
+    <!-- Channel Detail Modal -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="channelModal"
+      tabindex="-1"
+      aria-labelledby="channelModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content channel-detail-modal">
+          <div class="modal-header">
+            <h5
+              class="modal-title channel-detail-modal-title"
+              id="channelModalLabel"
+            ></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Channel details will go here -->
+            <p id="channelDetails"></p>
+            <p id="channel-creator"></p>
+            <p id="channel-create-at"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              class="btn btn-primary"
+              id="switchEditChannelButton"
+              data-bs-target="#editChannelModal"
+              data-bs-toggle="modal"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="editChannelModal"
+      aria-hidden="true"
+      aria-labelledby="editChannelModalLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content edit-channel-modal">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="editChannelModalLabel">
+              Edit channel
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editChannelForm" name="edit-channel">
+              <div class="mb-3">
+                <label for="channelName" class="col-form-label"
+                  >New Name:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="channelName"
+                  name="channel-name"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="channelDescription" class="col-form-label"
+                  >New Description:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="channelDescription"
+                  name="channel-desc"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              data-bs-target="#channelModal"
+              data-bs-toggle="modal"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="editChannelButton"
+            >
+              Edit Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ends here -->
+
+    <!-- Bootstrap Create channel Modal -->
+    <div
+      class="modal fade"
+      id="createChannelModal"
+      tabindex="-1"
+      aria-labelledby="createChannelModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content create-channel-modal">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createChannelModalLabel">
+              Create Channel
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- form starts here -->
+            <form name="create-channel">
+              <!-- Channel name -->
+              <div class="mb-3">
+                <label for="channel-name" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="channel-name"
+                  id="channel-name"
+                  required
+                />
+              </div>
+              <!-- Optional channel description -->
+              <div class="mb-3">
+                <label for="channel-description" class="form-label"
+                  >Description (Optional)</label
+                >
+                <textarea
+                  class="form-control"
+                  id="channel-description"
+                  rows="3"
+                ></textarea>
+              </div>
+              <!-- Channel type -->
+              <fieldset class="mb-3">
+                <legend class="col-form-label">Type</legend>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="channelType"
+                    id="publicChannel"
+                    value="public"
+                    checked
+                  />
+                  <label class="form-check-label" for="publicChannel">
+                    Public
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="channelType"
+                    id="privateChannel"
+                    value="private"
+                  />
+                  <label class="form-check-label" for="privateChannel">
+                    Private
+                  </label>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button id="create-channel" type="button" class="btn btn-primary">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ends here -->
+
+    <!-- channels page -->
+    <div id="page-channels" class="page-block">
+      <!-- channel list -->
+      <div id="left-side">
+        <section id="channel-left-section">
+          <div class="left-top">
+            <!-- <img src="./asset/Jerry.jpeg" alt=""> -->
+            <img
+              id="avatar-img"
+              src="./asset/defaultImg.jpg"
+              class="rounded-circle img-fluid d-block"
+              alt="User Avatar"
+            />
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#createChannelModal"
+            >
+              Create
+            </button>
+          </div>
+          <!-- use bootstrap list group -->
+          <div id="channel-list" class="list-group"></div>
+        </section>
+      </div>
+      <!-- channel screen -->
+      <div id="right-side" class="channel-screen d-flex flex-column">
+        <section class="channel-detail">
+          <!-- this section shows channel details -->
+        </section>
+        <section class="channel-msgs">
+          <!-- this section show channel message -->
+        </section>
+        <section class="channel-input mt-auto">
+          <!-- user send message -->
+        </section>
+      </div>
+    </div>
+
+    <main role="main">
+      <!-- app goes here -->
+      <div id="page-dashboard" class="page-block text-center">
+        <h1>Slackr is your productivity platform</h1>
+        <p>
+          Slack is a new way to communicate with your team. It's faster, better
+          organized and more secure than email
+        </p>
+      </div>
+    </main>
+
+    <!-- loading page -->
+    <section id="page-loading">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        style="margin: auto; background: #fff; display: block"
+        width="200px"
+        height="200px"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+      >
+        <defs>
+          <mask id="ldio-2of7nxlh1qa-mask">
+            <circle
+              cx="50"
+              cy="50"
+              r="20"
+              stroke="#fff"
+              stroke-linecap="round"
+              stroke-dasharray="94.24777960769379 31.41592653589793"
+              stroke-width="9"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                values="0 50 50;360 50 50"
+                times="0;1"
+                dur="1s"
+                repeatCount="indefinite"
+              ></animateTransform>
+            </circle>
+          </mask>
+        </defs>
+        <g mask="url(#ldio-2of7nxlh1qa-mask)">
+          <rect x="20.5" y="0" width="12.6" height="100" fill="#e15b64">
+            <animate
+              attributeName="fill"
+              values="#e15b64;#f47e60;#f8b26a;#abbd81;#849b87"
+              times="0;0.25;0.5;0.75;1"
+              dur="1s"
+              repeatCount="indefinite"
+              begin="-0.8s"
+            ></animate>
+          </rect>
+          <rect x="32.1" y="0" width="12.6" height="100" fill="#f47e60">
+            <animate
+              attributeName="fill"
+              values="#e15b64;#f47e60;#f8b26a;#abbd81;#849b87"
+              times="0;0.25;0.5;0.75;1"
+              dur="1s"
+              repeatCount="indefinite"
+              begin="-0.6s"
+            ></animate>
+          </rect>
+          <rect x="43.7" y="0" width="12.6" height="100" fill="#f8b26a">
+            <animate
+              attributeName="fill"
+              values="#e15b64;#f47e60;#f8b26a;#abbd81;#849b87"
+              times="0;0.25;0.5;0.75;1"
+              dur="1s"
+              repeatCount="indefinite"
+              begin="-0.4s"
+            ></animate>
+          </rect>
+          <rect x="55.3" y="0" width="12.6" height="100" fill="#abbd81">
+            <animate
+              attributeName="fill"
+              values="#e15b64;#f47e60;#f8b26a;#abbd81;#849b87"
+              times="0;0.25;0.5;0.75;1"
+              dur="1s"
+              repeatCount="indefinite"
+              begin="-0.2s"
+            ></animate>
+          </rect>
+          <rect x="66.9" y="0" width="12.6" height="100" fill="#849b87">
+            <animate
+              attributeName="fill"
+              values="#e15b64;#f47e60;#f8b26a;#abbd81;#849b87"
+              times="0;0.25;0.5;0.75;1"
+              dur="1s"
+              repeatCount="indefinite"
+              begin="0s"
+            ></animate>
+          </rect>
+        </g>
+      </svg>
+    </section>
+
+    <!-- register page -->
+    <div id="page-register" class="page-block container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h2 class="mb-4">Create an Account</h2>
+          <p class="mb-4">
+            We use accounts to sync user data. They're accessible only to you,
+            encrypted and secure. Learn more about how seriously we take
+            privacy.
+          </p>
+
+          <form id="register-form" name="register-form">
+            <div class="mb-3">
+              <label for="register-name" class="form-label">Name</label>
+              <input
+                id="register-name"
+                type="text"
+                name="name"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="register-email" class="form-label"
+                >Email address</label
+              >
+              <input
+                id="register-email"
+                type="email"
+                name="register-email"
+                class="form-control"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="register-password" class="form-label">Password</label>
+              <input
+                id="register-password"
+                name="register-password"
+                type="password"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="register-confirm-password" class="form-label"
+                >Confirm Password</label
+              >
+              <input
+                id="register-confirm-password"
+                name="register-confirm-password"
+                type="password"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <button
+                id="register-button"
+                type="submit"
+                class="btn btn-primary"
+              >
+                Create an Account
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- login page -->
+    <div id="page-login" class="page-block container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h2 class="mb-4">Sign in to your account</h2>
+          <form id="login-form" name="login-form">
+            <div class="mb-3">
+              <label for="login-email" class="form-label">Email address</label>
+              <input
+                id="login-email"
+                type="email"
+                name="login-email"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="login-password" class="form-label">Password</label>
+              <input
+                id="login-password"
+                name="password"
+                type="password"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <button id="login-button" type="submit" class="btn btn-primary">
+                Sign in
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- main ends here -->
+
+    <!-- <footer>
+      <p>&copy; Slackr</p>
+    </footer> -->
+    <!-- <script type="module" src="src/router.js"></script> -->
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

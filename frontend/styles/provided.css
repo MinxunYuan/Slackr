@@ -1,0 +1,485 @@
+
+/* base styles, feel free to edit */
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #313338;
+    height: 100vh;
+    font-family: -apple-system, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    border: 0px;
+    border-bottom: 1px solid #5763e1;
+    background-color: #25283a;
+    color: #e1e1e2;
+}
+
+header a {
+    text-decoration: none;
+    color: #e1e1e2;
+    
+}
+
+/* div > a {
+    color: #e1e1e2;
+} */
+
+/* list of all public channels created visible on every screen for a logged-in user */
+/* div > a#channels-link {
+    display: none;
+} */
+
+.auth-div {
+    width: 30%;
+}
+
+#page-dashboard {
+    background-color: #25283a;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    color: #e1e1e2;
+}
+
+#page-dashboard h1 {
+    color: #e1e1e2;
+}
+
+#page-channels > div#left-side {
+    flex: 1;
+    /* border: solid 1px #ccc; */
+
+    background-color: #2b2d31;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#page-channels > div#right-side {
+    flex: 3;
+    /* border: solid 1px #ccc; */
+    /* height: inherit; */
+    background-color: #313338;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#channel-form {
+    display: none;
+}
+
+#page-loading {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+.channel-list {
+    display: flex;
+    flex-direction: column;
+}
+
+#channel-list.list-group {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.channel-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.channel-item > button {
+    height: 50%;
+}
+
+
+#page-channels {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+#channel-left-section > div.left-top {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    /* justify-content: space-around; */
+    justify-content: space-between;
+    align-items: center;
+    height: 10%;
+    /* background-color: lightgreen; */
+
+}
+
+#page-channels > #left-side > section {
+    margin-left: 10px;
+    margin-right: 10px;
+    /* overflow: auto; */
+    /* max-height: 400px; */
+}
+
+
+
+.channel-item-div {
+    background-color: aquamarine;
+}
+
+.private-channel {
+    background-color: darkmagenta;
+}
+
+#page-channels .channel-msgs {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    height: 100%;
+    overflow-y: auto;
+    /* background-color: lightblue; */
+}
+
+#page-channels .channel-screen {
+    overflow: auto;
+}
+
+#page-channels .msg-container {
+    display: flex;
+    /* align-items: center; */
+    justify-content: left;
+    /* height: 50px; */
+
+    flex: 1;
+    margin-right: 24px;
+}
+
+#page-channels .send-name-time {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    /* height: 30px; */
+}
+
+.send-name-time p {
+    margin-bottom: 5px;
+}
+
+channel-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.channel-detail {
+    color: #e1e1e2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 0px;
+    border-bottom: 1px solid #5763e1;
+    background-color: #25283a;
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    width: 100%;
+    padding-right: 16px;
+    cursor: pointer;
+}
+
+.modal-content.create-channel-modal,
+.modal-content.channel-detail-modal,
+.modal-content.edit-channel-modal{
+    color: #e1e1e2;
+    background-color: #25283a;
+}
+
+.modal-content.channel-detail-modal > .modal-header,
+
+.modal-content.edit-channel-modal > .modal-header,
+.modal-content.channel-detail-modal > .modal-body,
+.modal-content.edit-channel-modal > .modal-body,
+.modal-content.channel-detail-modal > .modal-footer,
+.modal-content.edit-channel-modal > .modal-footer{
+    border-color: #202334;
+}
+
+input#channelName.form-control,
+input#channelDescription.form-control {
+    background-color: #3c425f;
+    border: 0;
+    color: white;
+}
+
+button#create-channel.btn.btn-primary,
+button#editChannelButton.btn.btn-primary,
+button#switchEditChannelButton.btn.btn-primary{
+    background-color: #202334;
+    border-color: #202334;
+}
+
+.modal-content.create-channel-modal input, 
+.modal-content.create-channel-modal textarea {
+    color: white;
+    border: 0;
+    background-color: #3c425f;
+}
+
+.modal-content.create-channel-modal div {
+    border-color: #202334;
+}
+
+.channel-meta {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+
+}
+
+channel-message {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.msg-content {
+    color: #dcdee1;
+}
+
+.sender-name {
+    color: #54a1b4;
+}
+
+.send-time {
+    color: #8d929b;
+}
+
+.msg-container img.user-image {
+    margin-right: 20px;
+    /* border-radius: 50%; */
+}
+
+.msg-container .msg-edited {
+    color: #dcdee1;
+    font-size: small;
+    display: none;
+}
+
+/* .msg-container .user-image img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+} */
+
+
+#avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+    background-color: #e1e1e2;
+}
+
+channel-item:hover {
+    background-color: #404248;
+    border-color: #404248;
+}
+
+.channel-item-div.list-group-item.active {
+    background-color: #404248;
+    border-color: #404248;    
+}
+
+/* .active-channel-item {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-radius: 5px;
+    border: 1px solid #5763e1;
+} */
+
+.channel-item-div.list-group-item {
+    background-color: #2b2d31;
+    border-color: #2b2d31;
+    color: #e1e1e2;
+    /* color: #81848d; */
+}
+
+.channel-item-div.list-group-item:hover {
+    background-color: #404248;
+    border-color: #404248;
+}
+
+.left-top button {
+    background-color: #404248;
+    border-color: #404248;
+}
+
+.left-top button:hover {
+    background-color: #5763e1;
+    border-color: #5763e1;
+}
+
+channel-input > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+#channel-input-textarea {
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: 16px;
+    margin-right: 16px;
+    /* resize: none; */
+    border: 0;
+    background-color: #3c425f;
+    caret-color: #b6bac0;
+    color: #b6bac0;
+}
+
+
+
+
+input.form-control:focus,
+textarea.form-control:focus {
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+/* #channel-description:focus {
+    box-shadow: none;
+    border: none;
+    outline: none;
+} */
+
+
+.channel-input-section {
+    margin-bottom: 10px
+}
+
+#channel-input-image{
+    position: absolute;
+    left: 32px;
+    color: white;
+}
+
+#channel-input-send {
+    position: absolute;
+    right: 32px;
+    color: white;
+}
+
+
+/* set scroll bar */
+::-webkit-scrollbar {
+    width: 5px; 
+    background: transparent;
+}  
+
+::-webkit-scrollbar-track {
+background: none;
+}
+
+::-webkit-scrollbar-thumb {
+background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #555;
+}
+
+
+/* channel message component */
+channel-message:hover {
+    background-color: #5763e1;
+}
+
+.user-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 20px;
+    background-color: #3c425f;
+}
+
+.channel-message-opts p{
+    margin: 0;
+}
+
+.channel-message-opts button {
+    padding-left: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    position: absolute;
+    right: 10px;
+}
+
+#channel-message-template {
+    display: flex;
+    flex-direction: row;
+}
+
+textarea.message-edit#channel-input-textarea {
+    display: none;
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+
+#channel-details-template {
+    display: revert;
+    
+}
+
+.channel-name {
+    margin-right: 16px;
+}
+
+.channel-pin {
+    cursor: pointer;
+}
+
+#userProfileOffcanvas {
+    color: #e1e1e2;
+    background-color: #25283a;
+}
+
+#userProfileOffcanvas textarea,
+#userProfileOffcanvas input {
+    background-color: #3c425f;
+    border: 0;
+    color: white;
+}
+
+#userProfileOffcanvas input::placeholder,
+#userProfileOffcanvas textarea::placeholder {
+    color: #888; 
+  }
